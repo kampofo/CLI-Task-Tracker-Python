@@ -21,27 +21,44 @@ def write_tasks_file(tasks_dict: dict):
         json.dump(tasks_dict, json_file, indent=4)
 
 
+def list_printer(task: dict, status: str | None = None):
+    if not status:
+        print(task)
+    elif task["status"] == status:
+        print(task)
+
+
 def add_task(description: str):
     # file DNE? create it and write to it
     if not os.path.isfile(TASKS_JSON_PATH):
         with open(TASKS_JSON_PATH, "w") as json_file:
             json.dump({"counter": 0, "tasks": []}, json_file)
 
-    tasks_dict: dict = read_tasks_file()
+    tasks_dict = read_tasks_file()
+    tasks_dict["counter"] += 1
 
     # append task to python dict
     tasks_dict["tasks"].append(
         {
-            "id": tasks_dict["counter"] + 1,
+            "id": tasks_dict["counter"],
             "description": description,
             "status": "todo",
             "createdAt": datetime.datetime.now().strftime("%c"),
             "updatedAt": "",
         }
     )
-    tasks_dict["counter"] += 1
 
     write_tasks_file(tasks_dict)
+
+    message = f"Task added successfully (ID: {tasks_dict['counter']})"
+    print(message)
+
+
+def list_all_tasks():
+    tasks_dict = read_tasks_file()
+
+    for task in tasks_dict["tasks"]:
+        list_printer(task)
 
 
 def main():
@@ -61,6 +78,8 @@ def main():
         # handle add action
         if action == "add" and len(args) == 2:
             add_task(args[1])
+        elif action == "list" and len(args) == 1:
+            list_all_tasks()
 
 
 if __name__ == "__main__":
