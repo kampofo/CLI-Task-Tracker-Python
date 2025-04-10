@@ -2,6 +2,7 @@ import argparse
 import datetime
 import json
 import os
+import pprint
 import sys
 from typing import Final
 
@@ -27,21 +28,24 @@ def add_task(description: str):
         with open(TASKS_JSON_PATH, "w") as json_file:
             json.dump({"counter": 0, "tasks": []}, json_file)
 
-    tasks_dict: dict = read_tasks_file()
+    tasks_dict = read_tasks_file()
+    tasks_dict["counter"] += 1
 
     # append task to python dict
     tasks_dict["tasks"].append(
         {
-            "id": tasks_dict["counter"] + 1,
+            "id": tasks_dict["counter"],
             "description": description,
             "status": "todo",
             "createdAt": datetime.datetime.now().strftime("%c"),
             "updatedAt": "",
         }
     )
-    tasks_dict["counter"] += 1
 
     write_tasks_file(tasks_dict)
+
+    message = f"Task added successfully (ID: {tasks_dict['counter']})"
+    print(message)
 
 
 def main():
