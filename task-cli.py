@@ -44,6 +44,9 @@ def add_task(description: str):
     write_tasks_file(tasks_dict)
 
 
+# List Functions
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("args", nargs="+", help="1 to 3 positional arguments")
