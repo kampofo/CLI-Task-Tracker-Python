@@ -9,15 +9,25 @@ from typing import Final
 TASKS_JSON_PATH: Final[str] = "./tasks.json"
 
 
+def read_tasks_file() -> dict:
+    # read in json file as python dict
+    with open(TASKS_JSON_PATH, "r") as json_file:
+        return json.load(json_file)
+
+
+def write_tasks_file(tasks_dict: dict):
+    # write updated dict as content for new file
+    with open(TASKS_JSON_PATH, "w") as json_file:
+        json.dump(tasks_dict, json_file, indent=4)
+
+
 def add_task(description: str):
     # file DNE? create it and write to it
     if not os.path.isfile(TASKS_JSON_PATH):
         with open(TASKS_JSON_PATH, "w") as json_file:
             json.dump({"counter": 0, "tasks": []}, json_file)
 
-    # read in json file as python dict
-    with open(TASKS_JSON_PATH, "r") as json_file:
-        tasks_dict: dict = json.load(json_file)
+    tasks_dict: dict = read_tasks_file()
 
     # append task to python dict
     tasks_dict["tasks"].append(
@@ -31,9 +41,7 @@ def add_task(description: str):
     )
     tasks_dict["counter"] += 1
 
-    # write updated dict as content for new file
-    with open(TASKS_JSON_PATH, "w") as json_file:
-        json.dump(tasks_dict, json_file, indent=4)
+    write_tasks_file(tasks_dict)
 
 
 def main():
