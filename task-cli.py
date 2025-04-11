@@ -61,6 +61,17 @@ def list_all_tasks():
         list_printer(task)
 
 
+def mark_task(id: int, status: str):
+    if status in ["in-progress", "done"]:
+        tasks_dict = read_tasks_file()
+
+        for task in tasks_dict["tasks"]:
+            if task["id"] == id:
+                task["status"] = status
+
+        write_tasks_file(tasks_dict)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("args", nargs="+", help="1 to 3 positional arguments")
@@ -82,6 +93,9 @@ def main():
         # handle list action
         elif action == "list" and len(args) == 1:
             list_all_tasks()
+
+        elif action == "mark-in-progress" and len(args) == 2:
+            mark_task(args[1], "in-progress")
 
 
 if __name__ == "__main__":
