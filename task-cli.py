@@ -67,6 +67,7 @@ def mark_task(id: int, status: str):
         for task in tasks_dict["tasks"]:
             if task["id"] == id:
                 task["status"] = status
+                task["updatedAt"] = datetime.datetime.now().strftime("%c")
 
         write_tasks_file(tasks_dict)
 
