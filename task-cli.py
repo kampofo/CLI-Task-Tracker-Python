@@ -64,7 +64,6 @@ def list_all_tasks():
 def mark_task(id: int, status: str):
     if status in ["in-progress", "done"]:
         tasks_dict = read_tasks_file()
-
         for task in tasks_dict["tasks"]:
             if task["id"] == id:
                 task["status"] = status
@@ -95,7 +94,12 @@ def main():
             list_all_tasks()
 
         elif action == "mark-in-progress" and len(args) == 2:
-            mark_task(args[1], "in-progress")
+            # TODO: handle case of trying to cast str int int
+            mark_task(int(args[1]), "in-progress")
+
+        elif action == "mark-done" and len(args) == 2:
+            # TODO: handle case of trying to cast str int int
+            mark_task(int(args[1]), "done")
 
 
 if __name__ == "__main__":
