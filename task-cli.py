@@ -23,9 +23,9 @@ def write_tasks_file(tasks_dict: dict):
 
 def list_printer(task: dict, status: str | None = None):
     if not status:
-        print(task)
+        print(task, "\n")
     elif task["status"] == status:
-        print(task)
+        print(task, "\n")
 
 
 def add_task(description: str):
@@ -99,7 +99,7 @@ def main():
             list_all_tasks()
 
         elif action == "list" and len(args) == 2:
-            if args[1] in ["todo", "done"]:
+            if args[1] in ["todo", "in-progress", "done"]:
                 list_all_tasks(args[1])
 
         elif action == "mark-in-progress" and len(args) == 2:
