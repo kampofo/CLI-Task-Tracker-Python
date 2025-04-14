@@ -99,7 +99,7 @@ def main():
             list_all_tasks()
 
         elif action == "list" and len(args) == 2:
-            if args[1] in ["done"]:
+            if args[1] in ["todo", "done"]:
                 list_all_tasks(args[1])
 
         elif action == "mark-in-progress" and len(args) == 2:
