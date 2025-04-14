@@ -77,6 +77,22 @@ def update_task(id: int, description: str):
 
     write_tasks_file(tasks_dict)
 
+    message = f"Task updated successfully (ID: {tasks_dict['counter']})"
+    print(message)
+
+
+def delete_task(id: int):
+    tasks_dict = read_tasks_file()
+
+    for i in range(len(tasks_dict["tasks"])):
+        if tasks_dict["tasks"][i]["id"] == id:
+            del tasks_dict["tasks"][i]
+
+    write_tasks_file(tasks_dict)
+
+    message = f"Task deleted successfully (ID: {tasks_dict['counter']})"
+    print(message)
+
 
 # mark tasks function
 def mark_task(id: int, status: str):
@@ -108,10 +124,6 @@ def main():
         if action == "add" and len(args) == 2:
             add_task(args[1])
 
-        # handle update action
-        if action == "update" and len(args) == 3:
-            update_task(int(args[1]), args[2])
-
         # handle list actions
         elif action == "list":
             if len(args) == 1:
@@ -119,6 +131,14 @@ def main():
             elif len(args) == 2:
                 if args[1] in ["todo", "in-progress", "done"]:
                     list_all_tasks(args[1])
+
+        # handle update action
+        elif action == "update" and len(args) == 3:
+            update_task(int(args[1]), args[2])
+
+        # handle delete action
+        elif action == "delete" and len(args) == 2:
+            delete_task(int(args[1]))
 
         elif action == "mark-in-progress" and len(args) == 2:
             # TODO: handle case of trying to cast str int int
