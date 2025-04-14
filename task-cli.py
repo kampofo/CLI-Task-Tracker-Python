@@ -54,11 +54,15 @@ def add_task(description: str):
     print(message)
 
 
-def list_all_tasks():
+def list_all_tasks(status: str | None = None):
     tasks_dict = read_tasks_file()
 
-    for task in tasks_dict["tasks"]:
-        list_printer(task)
+    if not status:
+        for task in tasks_dict["tasks"]:
+            list_printer(task)
+    else:
+        for task in tasks_dict["tasks"]:
+            list_printer(task, status)
 
 
 def mark_task(id: int, status: str):
@@ -93,6 +97,10 @@ def main():
         # handle list action
         elif action == "list" and len(args) == 1:
             list_all_tasks()
+
+        elif action == "list" and len(args) == 2:
+            if args[1] in ["done"]:
+                list_all_tasks(args[1])
 
         elif action == "mark-in-progress" and len(args) == 2:
             # TODO: handle case of trying to cast str int int
