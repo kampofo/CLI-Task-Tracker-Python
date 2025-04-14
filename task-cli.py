@@ -9,6 +9,7 @@ from typing import Final
 TASKS_JSON_PATH: Final[str] = "./tasks.json"
 
 
+# read and write file helpers
 def read_tasks_file() -> dict:
     # read in json file as python dict
     with open(TASKS_JSON_PATH, "r") as json_file:
@@ -19,13 +20,6 @@ def write_tasks_file(tasks_dict: dict):
     # write updated dict as content for new file
     with open(TASKS_JSON_PATH, "w") as json_file:
         json.dump(tasks_dict, json_file, indent=4)
-
-
-def list_printer(task: dict, status: str | None = None):
-    if not status:
-        print(task, "\n")
-    elif task["status"] == status:
-        print(task, "\n")
 
 
 def add_task(description: str):
@@ -54,6 +48,14 @@ def add_task(description: str):
     print(message)
 
 
+# list tasks functions
+def list_printer(task: dict, status: str | None = None):
+    if not status:
+        print(task, "\n")
+    elif task["status"] == status:
+        print(task, "\n")
+
+
 def list_all_tasks(status: str | None = None):
     tasks_dict = read_tasks_file()
 
@@ -65,6 +67,7 @@ def list_all_tasks(status: str | None = None):
             list_printer(task, status)
 
 
+# mark tasks function
 def mark_task(id: int, status: str):
     if status in ["in-progress", "done"]:
         tasks_dict = read_tasks_file()
@@ -94,13 +97,13 @@ def main():
         if action == "add" and len(args) == 2:
             add_task(args[1])
 
-        # handle list action
-        elif action == "list" and len(args) == 1:
-            list_all_tasks()
-
-        elif action == "list" and len(args) == 2:
-            if args[1] in ["todo", "in-progress", "done"]:
-                list_all_tasks(args[1])
+        # handle list actions
+        elif action == "list":
+            if len(args) == 1:
+                list_all_tasks()
+            elif len(args) == 2:
+                if args[1] in ["todo", "in-progress", "done"]:
+                    list_all_tasks(args[1])
 
         elif action == "mark-in-progress" and len(args) == 2:
             # TODO: handle case of trying to cast str int int
