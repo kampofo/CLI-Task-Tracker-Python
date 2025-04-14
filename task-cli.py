@@ -67,6 +67,17 @@ def list_all_tasks(status: str | None = None):
             list_printer(task, status)
 
 
+def update_task(id: int, description: str):
+    tasks_dict = read_tasks_file()
+
+    for task in tasks_dict["tasks"]:
+        if task["id"] == id:
+            task["description"] = description
+            task["updatedAt"] = datetime.datetime.now().strftime("%c")
+
+    write_tasks_file(tasks_dict)
+
+
 # mark tasks function
 def mark_task(id: int, status: str):
     if status in ["in-progress", "done"]:
@@ -96,6 +107,10 @@ def main():
         # handle add action
         if action == "add" and len(args) == 2:
             add_task(args[1])
+
+        # handle update action
+        if action == "update" and len(args) == 3:
+            update_task(int(args[1]), args[2])
 
         # handle list actions
         elif action == "list":
